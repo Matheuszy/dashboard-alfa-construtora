@@ -1,0 +1,16 @@
+# Ambiente virtual
+venv/
+__pycache__/
+
+# Planilhas com dados reais da empresa (NUNCA SUBIR)
+FINANCEIRO_ALFA.xlsx
+*.xlsx
+*.xls
+
+alfa_logo.png
+
+# Log ou arquivos temporários
+.streamlit/
+
+#variaveis de ambiente
+.env
