@@ -1,65 +1,102 @@
-# 📊 Dashboard Financeiro — ETL Alfa Construtora
+# 📊 BI & Analytics — ETL Alfa Construtora
 
-> Painel gerencial interativo para consolidação e análise de despesas corporativas, desenvolvido como solução de Business Intelligence para o setor financeiro de uma construtora.
+> Plataforma de Business Intelligence para consolidação e análise de despesas financeiras, execução de obras e operação de RH de uma construtora. Pipeline ETL completo + dashboard interativo com Dash.
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python&logoColor=white)
-![Streamlit](https://img.shields.io/badge/Streamlit-1.x-FF4B4B?logo=streamlit&logoColor=white)
-![Pandas](https://img.shields.io/badge/Pandas-ETL-150458?logo=pandas&logoColor=white)
-![Plotly](https://img.shields.io/badge/Plotly-Interativo-3F4F75?logo=plotly&logoColor=white)
+![Dash](https://img.shields.io/badge/Dash-2.18-008DE4?logo=plotly&logoColor=white)
+![Pandas](https://img.shields.io/badge/Pandas-3.x-150458?logo=pandas&logoColor=white)
+![Plotly](https://img.shields.io/badge/Plotly-6.x-3F4F75?logo=plotly&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Produção-success)
 
 ---
 
 ## 🎯 Sobre o Projeto
 
-Este projeto foi desenvolvido para automatizar a **consolidação e visualização de relatórios financeiros mensais** armazenados em planilhas Excel. O pipeline realiza o processo completo de **ETL (Extract, Transform, Load)**, transformando dados brutos em um dashboard analítico interativo.
+Desenvolvido para automatizar a **consolidação e visualização de relatórios mensais** armazenados em planilhas Excel. O pipeline realiza o processo completo de **ETL (Extract, Transform, Load)**, transformando dados brutos de múltiplas fontes em um dashboard analítico interativo com três módulos integrados.
 
-> ⚠️ **Aviso de privacidade:** Os dados reais da empresa são confidenciais e **não estão incluídos** neste repositório. Para rodar o projeto localmente, utilize o arquivo de exemplo disponibilizado (`sample_data.xlsx`) ou forneça sua própria planilha seguindo a estrutura descrita abaixo.
+> ⚠️ **Aviso de privacidade:** Os dados reais da empresa são confidenciais e **não estão incluídos** neste repositório. Para rodar o projeto, forneça suas próprias planilhas seguindo a estrutura descrita abaixo.
 
 ---
 
 ## ✨ Funcionalidades
 
+### Módulo Financeiro
 | Funcionalidade | Descrição |
 |---|---|
-| 📥 **ETL Multi-abas** | Leitura e consolidação automática de múltiplas abas mensais do Excel |
-| 🎛️ **Filtros Dinâmicos** | Filtragem cruzada por Mês, Departamento e Status de Pagamento |
-| 📈 **KPIs em Tempo Real** | Total de Despesas, Total Pago e Média por Despesa |
-| 📊 **Gráficos Interativos** | Barras, rosca, linha cronológica e análise por fonte |
-| 🎨 **Layout Customizado** | Modo escuro com identidade visual corporativa |
+| 📥 **ETL Multi-abas** | Consolida automaticamente todas as abas mensais do Excel financeiro |
+| 🎛️ **Filtros interativos** | Filtragem por Mês, Departamento, Status, Pontualidade e horizonte de pagamentos futuros |
+| 📈 **KPIs em tempo real** | Total de despesas, total pago, em aberto e em atraso |
+| 📊 **Análise de Pareto** | Identifica quais despesas concentram 80% do custo |
+| ⏱️ **Aging de pagamentos** | Classifica pagamentos em faixas: Antecipado, No prazo, Atraso até 30d, Atraso >30d |
+| 🏦 **Gasto por recebedor** | Stacked bar por Fonte de pagamento com breakdown PAGO/EM ABERTO |
+| 📅 **Pagamentos futuros** | Visualiza vencimentos em aberto nos próximos 7, 30 ou 90 dias |
+| 🖱️ **Filtro por clique** | Clique em qualquer barra para filtrar todos os gráficos relacionados |
+
+### Módulo Obras
+| Funcionalidade | Descrição |
+|---|---|
+| 🏗️ **Visão geral consolidada** | KPIs e distribuição de m² entre todos os tipos de serviço |
+| 🧱 **Piso Intertravado** | Top 10 endereços, histograma de tamanhos, scatter dimensional com outliers |
+| 🪨 **Pisos Especiais** | Consumo por logradouro e perfil de trechos padrão vs. atípicos |
+| 🚰 **Ligações de Esgoto** | Funil de conclusão técnica (Concluída → Parcial → Pendente) |
+| 🧱 **Calçada em Concreto** | Produção por bairro, top 8 ruas, scatter dimensional |
+
+### Módulo RH
+| Funcionalidade | Descrição |
+|---|---|
+| 👷 **Adiantamentos** | Total, ticket médio e distribuição por função |
+| 🔒 **Privacidade** | Dados bancários removidos automaticamente no ETL |
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
-
-- **Python** — linguagem principal
-- **Pandas** — tratamento e transformação de dados (ETL)
-- **Streamlit** — interface web e dashboard
-- **Plotly** — visualizações interativas
-- **Openpyxl** — leitura de arquivos Excel
-- **Python-dotenv** — gerenciamento de variáveis de ambiente
-
----
-
-## 📁 Estrutura do Projeto
+## 🗂️ Arquitetura do Projeto
 
 ```
 ETL-ALFA-CONSTRUTORA/
 │
-├── app.py                  # Dashboard principal (multi-mês)
-├── pipeline.py             # Versão simplificada (single-mês)
-├── sample_data.xlsx        # ✅ Arquivo de exemplo com dados fictícios
-├── .env                    # Variável DATA_FILE (não versionado)
-├── .env.example            # Modelo do .env para novos usuários
-├── requirements.txt        # Dependências do projeto
+├── dash_app.py          # Dashboard principal (Dash) ← ENTRADA PRINCIPAL
+├── data_transformer.py  # ETL: leitura, limpeza e normalização de todos os Excel
+│
+├── assets/
+│   └── alfa.css         # Tema dark customizado, pills, cards, grid responsivo
+│
+├── data/                # Planilhas Excel (não versionadas)
+│   ├── FINANCEIRO_ALFA.xlsx
+│   ├── MEDIÇÃO GERAL 8 - MARQUISE (PISO INTERTRAVADO).xlsx
+│   ├── MEDIÇÃO 08 - MARQUISE (CONCRETO).xlsx
+│   ├── MEDIÇÃO GERAL 8 - JUNHO - (PISOS ESPECIAIS).xlsx
+│   ├── PLANILHA GERAL - ADIANTAMENTO.xlsx
+│   └── MEDIÇÃO GERAL 8 - JUNHO - PLANILHA GERAL.xlsx
+│
+├── app.py               # Dashboard legado (Streamlit) — mantido para referência
+├── pipeline.py          # Protótipo inicial Streamlit — mantido para referência
+│
+├── .env                 # Variável DATA_FILE (não versionado)
+├── .env.example         # Modelo do .env
+├── requirements.txt     # Dependências do projeto
 └── README.md
 ```
 
 ---
 
-## 🗂️ Estrutura Esperada da Planilha
+## 🛠️ Tecnologias
 
-O arquivo Excel deve conter **uma aba por mês** (ex: `JAN-2026`, `FEV`, `MARÇO`...), com dados a partir da **4ª linha** e as seguintes colunas na ordem:
+| Biblioteca | Versão | Uso |
+|---|---|---|
+| **Python** | 3.10+ | Linguagem principal |
+| **Dash** | 2.18 | Framework do dashboard |
+| **dash-bootstrap-components** | 1.6 | Layout e componentes UI |
+| **Plotly** | 6.x | Visualizações interativas |
+| **Pandas** | 3.x | ETL e transformação de dados |
+| **Openpyxl** | 3.x | Leitura de arquivos Excel |
+| **python-dotenv** | 1.x | Variáveis de ambiente |
+
+---
+
+## 🗂️ Estrutura Esperada das Planilhas
+
+### `FINANCEIRO_ALFA.xlsx`
+Uma aba por mês (`JAN-2026`, `FEV`, `MARÇO`...). Dados a partir da **5ª linha**, colunas na ordem:
 
 | Coluna | Descrição |
 |---|---|
@@ -68,16 +105,24 @@ O arquivo Excel deve conter **uma aba por mês** (ex: `JAN-2026`, `FEV`, `MARÇO
 | `Valor` | Valor em R$ |
 | `Parcela` | Ex: `1/3` |
 | `Vencimento` | Data de vencimento |
-| `Data_Pagamento` | Data em que foi pago |
-| `Fonte` | Banco ou meio de pagamento |
+| `Data_Pagamento` | Data em que foi efetivamente pago |
+| `Fonte` | Banco ou meio de pagamento (recebedor) |
 | `Status` | `PAGO` ou `EM ABERTO` |
 | `Obs` | Observações livres |
 
-> O arquivo `sample_data.xlsx` já segue essa estrutura e pode ser usado como ponto de partida.
+> A aba `Planilha1` é ignorada automaticamente.
+
+### Medições de Obra (`.xlsx`)
+Cada arquivo de medição deve conter, a partir da **4ª linha**:
+`Bairro`, `Rua`, `Número`, `Comprimento`, `Largura`, `Area_m2`
+O arquivo de Piso Intertravado inclui uma coluna `Data` como primeira coluna.
+
+### `PLANILHA GERAL - ADIANTAMENTO.xlsx`
+A partir da **4ª linha**: `Nome`, `Função`, `Dados_bancários` *(removido no ETL)*, `Valor`.
 
 ---
 
-## ⚙️ Como Executar Localmente
+## ⚙️ Como Executar
 
 **1. Clone o repositório**
 ```bash
@@ -101,42 +146,45 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-**4. Configure o arquivo `.env`**
-
-Copie o arquivo de exemplo e ajuste o nome da planilha:
+**4. Configure o `.env`**
 ```bash
 cp .env.example .env
 ```
-
-Conteúdo do `.env`:
 ```env
-DATA_FILE=sample_data.xlsx
+DATA_FILE=FINANCEIRO_ALFA.xlsx
 ```
 
-> Substitua `sample_data.xlsx` pelo caminho da sua planilha real caso queira usar dados próprios.
+**5. Coloque os arquivos Excel na pasta `data/`**
 
-**5. Execute o dashboard**
-```bash
-streamlit run app.py
-```
+Consulte a seção *Estrutura Esperada das Planilhas* acima para os nomes e formatos corretos.
 
-### Alternativa Dash: painel integrado dos Excel
-
-O arquivo `dash_app.py` lê automaticamente os arquivos da pasta `data/`, normaliza as planilhas financeiras, as medições de obra e os adiantamentos da operação de RH. Ele preserva os arquivos de origem e gera os insights diretamente em memória.
-
+**6. Inicie o dashboard**
 ```bash
 python dash_app.py
 ```
 
-Abra `http://127.0.0.1:8050`. O painel Dash oferece filtros cruzados e indicadores de despesas, inadimplência, execução por serviço e bairro, trechos atípicos e adiantamentos por função. Clique em barras e pontos para filtrar os gráficos relacionados; use o botão de limpeza para remover esses filtros.
+Acesse **http://127.0.0.1:8050** no navegador.
 
 ---
 
-## 📌 Observações
+## 🖱️ Como Usar o Dashboard
 
-- A aba `Planilha1` é ignorada automaticamente no carregamento — use-a como índice ou sumário se necessário.
-- Valores não numéricos na coluna `Valor` são descartados com `coerce`.
-- Datas inválidas são exibidas como `Não informado` ou `Pendente`.
+- **Filtros por pill** — clique nas pills de Mês, Departamento, Status, Pontualidade e Pagamentos Futuros para filtrar os gráficos do módulo Financeiro
+- **Filtro por clique no gráfico** — clique em qualquer barra para aplicar aquele valor como filtro cruzado; o indicador na toolbar mostra os filtros ativos
+- **Limpar filtros dos gráficos** — botão na toolbar remove todos os filtros aplicados por clique
+- **Troca de módulo** — tabs no topo alternam entre Financeiro, Obras e RH
+- **Serviços da obra** — radio buttons selecionam qual tipo de serviço detalhar
+
+---
+
+## 📌 Observações Técnicas
+
+- O `data_transformer.py` é independente do dashboard — pode ser importado em outros scripts ou notebooks
+- Todos os dados são carregados uma única vez no startup e mantidos em memória; nenhum arquivo de origem é modificado
+- Valores não numéricos na coluna `Valor` são convertidos com `errors="coerce"` e preenchidos com `0.0`
+- Datas inválidas resultam em `NaT` e não afetam o cálculo de aging
+- O aging é calculado como `Data_Pagamento - Vencimento` em dias (negativo = antecipado)
+- O campo `Dados_bancários` da planilha de adiantamentos é descartado no ETL e nunca exposto no dashboard
 
 ---
 
