@@ -120,6 +120,16 @@ DATA_FILE=sample_data.xlsx
 streamlit run app.py
 ```
 
+### Alternativa Dash: painel integrado dos Excel
+
+O arquivo `dash_app.py` lê automaticamente os arquivos da pasta `data/`, normaliza as planilhas financeiras, as medições de obra e os adiantamentos da operação de RH. Ele preserva os arquivos de origem e gera os insights diretamente em memória.
+
+```bash
+python dash_app.py
+```
+
+Abra `http://127.0.0.1:8050`. O painel Dash oferece filtros cruzados e indicadores de despesas, inadimplência, execução por serviço e bairro, trechos atípicos e adiantamentos por função. Clique em barras e pontos para filtrar os gráficos relacionados; use o botão de limpeza para remover esses filtros.
+
 ---
 
 ## 📌 Observações

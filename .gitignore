@@ -3,7 +3,7 @@ venv/
 __pycache__/
 
 # Planilhas com dados reais da empresa (NUNCA SUBIR)
-FINANCEIRO_ALFA.xlsx
+data/
 *.xlsx
 *.xls
 
