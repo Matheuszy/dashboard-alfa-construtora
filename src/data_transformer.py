@@ -9,7 +9,7 @@ import re
 import pandas as pd
 import numpy as np
 
-DATA_DIR = Path(__file__).resolve().parent / "data"
+DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 
 def to_number(value: object) -> float:
     if pd.isna(value): return 0.0
