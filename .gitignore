@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.git
+venv/
+env/
+.venv/
+.DS_Store
+*.log
+
+alfa_logo.png
