@@ -1,8 +1,8 @@
-﻿# -*- coding: utf-8 -*-
-"""Dashboard Dash — Alfa Construtora."""
-from __future__ import annotations
+﻿from __future__ import annotations
 from pathlib import Path
 import os
+import sys
+from pathlib import Path
 import base64
 from flask import Flask
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user
@@ -21,28 +21,38 @@ from dotenv import load_dotenv
 load_dotenv() 
 
 
-
 # ─────────────────────────────────────────────────────────────────────────────
 # BANCO DE DADOS (MongoDB)
 # ─────────────────────────────────────────────────────────────────────────────
-# Se não houver a variável de ambiente, tenta conectar no localhost padrão do Mongo
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+
+# Se for teste ou se a URI contiver o texto de exemplo, forçamos o mock com URI local segura
+if "pytest" in sys.modules or "seu-cluster" in MONGO_URI:
+    from mongomock import MongoClient
+    MONGO_URI = "mongodb://localhost:27017/"
+    print("⚠️ Modo de Teste detectado: Forçando URI local para o Mongomock.")
+else:
+    from pymongo import MongoClient
+
 mongo_client = MongoClient(MONGO_URI)
 db = mongo_client["alfa_analytics"]
 users_col = db["usuarios"]
 
 # --- CRIAÇÃO AUTOMÁTICA DO USUÁRIO ROOT ---
-# Se o banco estiver vazio (primeira vez rodando), criamos o super-usuário
-if ROOT_USER and ROOT_PASS:
-    if users_col.count_documents({"username": ROOT_USER}) == 0:
-        users_col.insert_one({
-            "username": ROOT_USER,
-            "password_hash": generate_password_hash(ROOT_PASS),
-            "role": "root"
-        })
-        print(f"⚠️ Usuário ROOT '{ROOT_USER}' criado com sucesso a partir do .env.")
-else:
-    print("⚠️ AVISO: ROOT_USER ou ROOT_PASS não encontrados no arquivo .env!")
+ROOT_USER = os.getenv("ROOT_USER")
+ROOT_PASS = os.getenv("ROOT_PASS")
+
+if ROOT_USER and ROOT_PASS and "seu-cluster" not in MONGO_URI and "pytest" not in sys.modules:
+    try:
+        if users_col.count_documents({"username": ROOT_USER}) == 0:
+            users_col.insert_one({
+                "username": ROOT_USER,
+                "password_hash": generate_password_hash(ROOT_PASS),
+                "role": "root"
+            })
+            print(f"⚠️ Usuário ROOT '{ROOT_USER}' criado com sucesso a partir do .env.")
+    except Exception as e:
+        print(f"Aviso na inicialização do banco: {e}")
 
 # ─────────────────────────────────────────────────────────────────────────────
 # BACKEND FLASK E GERENCIAMENTO DE SESSÃO
@@ -113,8 +123,8 @@ def graph(gid):
                      style={"minHeight": "320px"})
 
 def get_logo_src():
-    p = "alfa_logo.png"
-    if os.path.exists(p):
+    p = Path(__file__).resolve().parent.parent / "alfa_logo.png"
+    if p.exists():
         with open(p, "rb") as f:
             return "data:image/png;base64," + base64.b64encode(f.read()).decode()
     return ""
