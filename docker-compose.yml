@@ -1,9 +1,12 @@
 version: '3.8'
+
 services:
   dashboard:
     build: .
     ports:
       - "8050:8050"
     restart: always
+    env_file:
+      - .env
     volumes:
       - ./data:/app/data
