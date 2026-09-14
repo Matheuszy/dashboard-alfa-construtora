@@ -1,47 +1,267 @@
-* { box-sizing: border-box; }
-body { margin: 0; background: #0E1117; color: #F5F5F5; font-family: Arial, sans-serif; overflow-x: hidden; }
-.page { max-width: 1500px; margin: auto; padding: 24px; }
-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; margin-bottom: 16px; }
-h1 { margin: 0; } p, .source-note, .metric-note { color: #A7A9B0; }
+/* ── Reset & base ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
 
-/* ── Filtros financeiros ── */
-.finance-filters { display: flex; flex-direction: column; gap: 14px; margin: 18px 0; padding: 16px; background: #161922; border-radius: 10px; border: 1px solid #2C2F3A; }
-.filter-group { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
-.filter-label { min-width: 110px; font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #A7A9B0; padding-top: 7px; }
+html { font-size: 16px; }
 
-/* Pills (checklist multi-select) */
-.pill-checklist { display: flex; flex-wrap: wrap; gap: 6px; }
-.pill-item {
-    display: inline-flex; align-items: center; gap: 5px;
-    padding: 5px 12px; border-radius: 20px; cursor: pointer;
-    border: 1px solid #3A3D4A; background: #1A1C24;
-    font-size: .82rem; color: #D7D8DD;
+body {
+    margin: 0;
+    background: #0E1117;
+    color: #F5F5F5;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+}
+
+/* ── Page wrapper ─────────────────────────────────────────────────────────── */
+.page {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 20px 24px;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.header-logo {
+    height: 56px;
+    width: auto;
+    max-width: 160px;
+    object-fit: contain;
+}
+
+h1 { margin: 0; font-size: clamp(1.2rem, 3vw, 1.8rem); }
+h2 { font-size: clamp(1rem, 2.5vw, 1.4rem); }
+h3 { font-size: clamp(0.95rem, 2vw, 1.15rem); }
+
+p, .source-note, .metric-note { color: #A7A9B0; font-size: 0.85rem; }
+
+/* ── Tabs ────────────────────────────────────────────────────────────────── */
+.tab  { background: #1A1C24 !important; color: #D7D8DD !important; border-color: #333 !important; }
+.tab--selected { border-top: 3px solid #C41E3A !important; color: white !important; }
+
+/* ── Toolbar ─────────────────────────────────────────────────────────────── */
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 14px 0 0;
+}
+
+.clear-button {
+    background: #30333D;
+    color: #F5F5F5;
+    border: 1px solid #555;
+    border-radius: 6px;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    transition: background .2s;
+}
+.clear-button:hover { background: #C41E3A; border-color: #C41E3A; }
+
+/* ── Filtros financeiros / RH ─────────────────────────────────────────────── */
+.finance-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 16px 0;
+    padding: 14px 16px;
+    background: #161922;
+    border-radius: 10px;
+    border: 1px solid #2C2F3A;
+}
+
+.filter-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-label {
+    min-width: 108px;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: #A7A9B0;
+    padding-top: 6px;
+    flex-shrink: 0;
+}
+
+/* ── Pills ───────────────────────────────────────────────────────────────── */
+.pill-checklist { display: flex; flex-wrap: wrap; gap: 5px; }
+
+label.pill-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 11px;
+    border-radius: 20px;
+    cursor: pointer;
+    border: 1px solid #3A3D4A;
+    background: #1A1C24;
+    font-size: .8rem;
+    color: #D7D8DD;
     transition: background .18s, border-color .18s, color .18s;
     user-select: none;
+    white-space: nowrap;
 }
-.pill-item:hover { border-color: #C41E3A; color: white; }
-.pill-input { accent-color: #C41E3A; width: 13px; height: 13px; cursor: pointer; }
-/* pill selecionada — JS não aplica classe, mas o accent-color + checked state já sinaliza */
+label.pill-item:hover { border-color: #C41E3A; color: white; background: #2a1520; }
 
-/* ── Filtros / nav de obra (mantidos) ── */
-.filters { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 18px 0; }
-.toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 16px 0 0; }
-.clear-button { background: #30333D; color: #F5F5F5; border: 1px solid #555; border-radius: 6px; padding: 8px 12px; cursor: pointer; }
-.clear-button:hover { background: #C41E3A; }
-.work-nav { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 18px 0; padding: 12px 16px; background: #161922; border-radius: 10px; border: 1px solid #2C2F3A; }
-.button-radio label { display: inline-block; margin: 3px; padding: 7px 14px; border: 1px solid #3A3D4A; border-radius: 20px; background: #1A1C24; cursor: pointer; font-size: .82rem; color: #D7D8DD; transition: background .18s, border-color .18s, color .18s; }
+input.pill-input {
+    accent-color: #C41E3A;
+    width: 13px;
+    height: 13px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* ── Servicos da obra (radio) ────────────────────────────────────────────── */
+.work-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+    padding: 12px 16px;
+    background: #161922;
+    border-radius: 10px;
+    border: 1px solid #2C2F3A;
+}
+.button-radio label {
+    display: inline-block;
+    margin: 3px;
+    padding: 6px 13px;
+    border: 1px solid #3A3D4A;
+    border-radius: 20px;
+    background: #1A1C24;
+    cursor: pointer;
+    font-size: .8rem;
+    color: #D7D8DD;
+    transition: background .18s, border-color .18s, color .18s;
+    white-space: nowrap;
+}
 .button-radio label:hover { background: #C41E3A; border-color: #C41E3A; color: white; }
-.button-radio input { margin-right: 5px; accent-color: #C41E3A; }
+.button-radio input { margin-right: 4px; accent-color: #C41E3A; }
 
-/* ── Cards / Grid ── */
-.cards, .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 16px 0; }
-.grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.metric-card { background: #1A1C24; border-left: 4px solid #C41E3A; border-radius: 8px; padding: 16px; }
-.metric-label { color: #A7A9B0; font-size: .85rem; } .metric-value { font-size: 1.5rem; font-weight: bold; margin: 8px 0; }
-.metric-note { font-size: .8rem; } .dash-graph { background: #1A1C24; border-radius: 8px; }
-.insights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 16px 0; }
-.insight { background: #161922; border-radius: 8px; padding: 14px; color: #D7D8DD; display: grid; gap: 6px; }
-.insight strong { color: #FF6B6B; }
-.tab { background: #1A1C24 !important; color: #D7D8DD !important; border-color: #333 !important; }
-.tab--selected { border-top: 3px solid #C41E3A !important; color: white !important; }
-@media (max-width: 850px) { .cards, .grid, .filters, .insights { grid-template-columns: 1fr; } .finance-filters { padding: 12px; } .filter-group { flex-direction: column; } .filter-label { min-width: unset; } header, .toolbar { display: block; } .clear-button { margin-top: 10px; } }
+/* ── KPI Cards ───────────────────────────────────────────────────────────── */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin: 14px 0;
+}
+
+.metric-card {
+    background: #1A1C24;
+    border-left: 4px solid #C41E3A;
+    border-radius: 8px;
+    padding: 14px 16px;
+    min-width: 0;
+}
+.metric-label { color: #A7A9B0; font-size: .82rem; }
+.metric-value { font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-weight: bold; margin: 6px 0 4px; word-break: break-word; }
+.metric-note  { font-size: .78rem; color: #A7A9B0; }
+
+/* ── Insights ────────────────────────────────────────────────────────────── */
+.insights {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin: 14px 0;
+}
+.insight {
+    background: #161922;
+    border-radius: 8px;
+    padding: 12px 14px;
+    color: #D7D8DD;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: .87rem;
+    min-width: 0;
+}
+.insight strong { color: #FF6B6B; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+
+/* ── Grid de gráficos (2 colunas) ────────────────────────────────────────── */
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 14px 0;
+}
+
+/* Garante que cada gráfico Plotly respeita o container */
+.grid-2 .dash-graph,
+.grid-2 > div { min-width: 0; }
+
+/* ── Tabela ──────────────────────────────────────────────────────────────── */
+.table-title { margin: 20px 0 8px; }
+
+/* ── Misc ────────────────────────────────────────────────────────────────── */
+.dash-graph { background: #1A1C24; border-radius: 8px; }
+
+/* ── RESPONSIVIDADE ──────────────────────────────────────────────────────── */
+
+/* Tablet landscape / small desktop  (≤ 1100px) */
+@media (max-width: 1100px) {
+    .page { padding: 16px; }
+    .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Tablet portrait (≤ 850px) */
+@media (max-width: 850px) {
+    .cards   { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-2  { grid-template-columns: 1fr; }
+    .insights { grid-template-columns: 1fr; }
+
+    header { flex-direction: column; align-items: flex-start; }
+    .header-logo { height: 44px; }
+
+    .toolbar { flex-direction: column; align-items: flex-start; }
+    .clear-button { width: 100%; }
+
+    .filter-group { flex-direction: column; gap: 6px; }
+    .filter-label { min-width: unset; padding-top: 0; }
+    .finance-filters { padding: 12px; }
+}
+
+/* Mobile (≤ 540px) */
+@media (max-width: 540px) {
+    html { font-size: 14px; }
+    .page { padding: 10px 12px; }
+
+    .cards { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .metric-card { padding: 10px 12px; }
+
+    .header-logo { height: 36px; }
+    h1 { font-size: 1.1rem; }
+
+    label.pill-item { font-size: .75rem; padding: 4px 9px; }
+
+    .grid-2 { gap: 10px; }
+}
+
+/* Mobile pequeno (≤ 360px) */
+@media (max-width: 360px) {
+    .cards { grid-template-columns: 1fr; }
+}
