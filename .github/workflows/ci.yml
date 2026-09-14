@@ -17,8 +17,8 @@ jobs:
     - name: Configurar o Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
-        cache: 'pip' # Faz cache do pip para acelerar o build
+        python-version: '3.12'  # <-- Alterado para 3.12 para bater com o numpy e sua máquina local
+        cache: 'pip'
 
     - name: Instalar dependências
       run: |
@@ -32,7 +32,7 @@ jobs:
     - name: Configurar Docker Buildx
       uses: docker/setup-buildx-action@v3
 
-    - name: Testar Build do Docker (Garante que vai rodar na nuvem)
+    - name: Testar Build do Docker
       uses: docker/build-push-action@v5
       with:
         context: .
