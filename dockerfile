@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 WORKDIR /app
 
@@ -9,6 +9,4 @@ COPY . .
 
 EXPOSE 8050
 
-# Usa o Gunicorn (servidor de produção) rodando com 2 trabalhadores (workers)
-# "dash_app:server" aponta para o arquivo dash_app.py e a variável 'server' do Flask
-CMD ["gunicorn", "--chdir", "src", "--bind", "0.0.0.0:8050", "--workers", "2", "dash_app:server"]orkers", "2", "dash_app:server"]
+CMD ["gunicorn", "--chdir", "src", "--bind", "0.0.0.0:8050", "--workers", "2", "dash_app:server"]
