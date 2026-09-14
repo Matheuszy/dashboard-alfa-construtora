@@ -1,11 +1,12 @@
 # Ambiente virtual
 venv/
 __pycache__/
+*.pyc
 
 # Planilhas com dados reais da empresa (NUNCA SUBIR)
 data/
-*.xlsx
-*.xls
+data/*.xlsx
+data/*.pdf
 
 alfa_logo.png
 
